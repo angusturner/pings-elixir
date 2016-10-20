@@ -1,19 +1,21 @@
 # Pings
 
-To start your Phoenix app:
+## Requirements
+  * Elixir and the Phoenix web framework. Installation guides can be found here (http://www.phoenixframework.org/docs/installation)
+  * PostgreSQL
 
+## Instructions
+  * Configure the database settings in `config/dev.exs`.
   * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+  * Setup the database with `mix ecto.create && mix ecto.migrate`
   * Start Phoenix endpoint with `mix phoenix.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+The server runs at [`localhost:4000`](http://localhost:4000)
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
-
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+## Further notes
+A lot of boilerplate relating to compilation and serving of static assets could probably removed.
+The key project files are:
+  * Routing: `web/router.ex`
+  * Controller: `web/controllers/ping_controller.ex`
+  * Model: `web/models/ping.ex`
+  * Views: `web/views/page_view.ex` (just renders the JSON output)  
