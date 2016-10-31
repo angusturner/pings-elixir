@@ -23,19 +23,19 @@ defmodule Pings.Ping do
     %{response: "OK"}
   end
 
-  # fetch all entries for a particular device on a particular date
+  # fetch all entries for a single device on the specified date
   def single_date(%{"device_id" => device_id, "date" => date}) do
     {lower, upper} = date_to_range(date)
     single_device(device_id, lower, upper)
   end
 
-  # fetch all entries for a particular device on a particular date
+  # fetch all entries for a single device in the specified range
   def single_range(%{"device_id" => device_id, "from" => from, "to" => to}) do
     [lower, upper] = [from, to] |> Enum.map(&to_timex/1)
     single_device(device_id, lower, upper)
   end
 
-  # return all pings for a given device, in the specified range
+  # return all pings for a given device, between lower and upper
   defp single_device(device_id, lower, upper) do
     query = from p in Ping,
       where: p.device_id == ^device_id and p.time >= ^lower and p.time < ^upper,
@@ -52,13 +52,13 @@ defmodule Pings.Ping do
     all_devices(lower, upper)
   end
 
-  # fetch all pings in a particular range
+  # fetch all pings in the specified range
   def all_range(%{"from" => from, "to" => to}) do
     [lower, upper] = [from, to] |> Enum.map(&to_timex/1)
     all_devices(lower, upper)
   end
 
-  # return all pings in the specified range
+  # return all pings (all devices) between lower and upper
   defp all_devices(lower, upper) do
     query = from p in Ping,
       where: p.time >= ^lower and p.time < ^upper,
@@ -92,6 +92,8 @@ defmodule Pings.Ping do
     %{result: "OK"}
   end
 
+  ### Helper Functions for Date Manipulation ###
+  
   # convert an ISO Date to a 24hr interval defined by two Timex.DateTime structs
   defp date_to_range(date) do
     lower = to_timex(date)
@@ -108,7 +110,7 @@ defmodule Pings.Ping do
     |> Timex.format!("{s-epoch}")
   end
 
-  # convert ISO and UTC supplied dates to timex DateTime structs
+  # convert ISO and UTC supplied dates to Timex.DateTime structs
   defp to_timex(date) do
     # try parsing as ISO Date, else default to UTC (seconds)
     case Timex.parse(date, "{YYYY}-{0M}-{0D}") do
